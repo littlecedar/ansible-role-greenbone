@@ -1,0 +1,6 @@
+---
+- name: Syntax check only
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - greenbone

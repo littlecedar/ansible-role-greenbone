@@ -1,0 +1,17 @@
+#!/bin/bash
+# Installed by ansible-role-greenbone. Do not docker compose down -v.
+set -euo pipefail
+cd {{ greenbone_base_path }}
+exec 9>/var/lock/greenbone-feed-sync.lock
+if ! flock -n 9; then
+  echo "$(date -Is) previous sync still running, exiting"
+  exit 0
+fi
+echo "$(date -Is) pulling feed images"
+docker compose -p {{ greenbone_compose_project }} pull {{ greenbone_feed_services | join(' ') }}
+echo "$(date -Is) recreating feed containers"
+docker compose -p {{ greenbone_compose_project }} up -d {{ greenbone_feed_services | join(' ') }}
+echo "$(date -Is) pruning dangling images"
+docker image prune -f
+echo "$(date -Is) done"
+df -h / | tail -1

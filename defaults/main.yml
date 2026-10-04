@@ -1,0 +1,26 @@
+---
+# Standalone defaults. The MASH playbook overrides identifier and base path.
+# Centurion must keep greenbone_base_path at /opt/siem/greenbone before this is enabled.
+
+greenbone_enabled: false
+
+greenbone_identifier: greenbone
+greenbone_base_path: /opt/siem/greenbone
+greenbone_https_port: 9443
+greenbone_compose_project: greenbone-community-edition
+
+greenbone_feed_sync_script: /usr/local/sbin/greenbone-feed-sync.sh
+greenbone_feed_sync_service: greenbone-feed-sync.service
+greenbone_feed_sync_timer: greenbone-feed-sync.timer
+greenbone_feed_sync_log: /var/log/greenbone-feed-sync.log
+greenbone_feed_sync_calendar: "*-*-* 03:15:00"
+greenbone_feed_sync_random_delay: 10m
+
+greenbone_feed_services:
+  - notus-data
+  - vulnerability-tests
+  - scap-data
+  - dfn-cert-data
+  - cert-bund-data
+  - report-formats
+  - data-objects

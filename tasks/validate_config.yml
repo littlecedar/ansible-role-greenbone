@@ -1,0 +1,11 @@
+---
+- name: Require the live Centurion settings when Greenbone is enabled
+  ansible.builtin.assert:
+    that:
+      - greenbone_base_path | length > 0
+      - (greenbone_https_port | int) == 9443
+      - greenbone_compose_project == "greenbone-community-edition"
+    fail_msg: >-
+      Greenbone must stay on host port 9443 and compose project
+      greenbone-community-edition.
+  when: greenbone_enabled | bool

@@ -1,0 +1,17 @@
+---
+- name: Validate Greenbone configuration
+  ansible.builtin.import_tasks: validate_config.yml
+  tags:
+    - setup-all
+    - setup-greenbone
+    - install-all
+    - install-greenbone
+
+- name: Adopt the existing Greenbone stack
+  ansible.builtin.import_tasks: install.yml
+  when: greenbone_enabled | bool
+  tags:
+    - setup-all
+    - setup-greenbone
+    - install-all
+    - install-greenbone

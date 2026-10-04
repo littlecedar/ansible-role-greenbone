@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Greenbone Community feed sync
+
+[Timer]
+OnCalendar={{ greenbone_feed_sync_calendar }}
+Persistent=true
+RandomizedDelaySec={{ greenbone_feed_sync_random_delay }}
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,77 @@
+---
+- name: Ensure the Greenbone directory exists
+  ansible.builtin.file:
+    path: "{{ greenbone_base_path }}"
+    state: directory
+    mode: "0755"
+
+- name: Check for the existing compose file
+  ansible.builtin.stat:
+    path: "{{ greenbone_base_path }}/compose.yaml"
+  register: gb_compose
+
+- name: Install compose.yaml when the directory has none
+  ansible.builtin.copy:
+    src: compose.yaml
+    dest: "{{ greenbone_base_path }}/compose.yaml"
+    mode: "0644"
+    force: false
+  when: not gb_compose.stat.exists
+
+- name: Ensure Greenbone publishes HTTPS on host port 9443
+  ansible.builtin.replace:
+    path: "{{ greenbone_base_path }}/compose.yaml"
+    regexp: '127\.0\.0\.1:9443:443|"9443:443"|127\.0\.0\.1:443:443'
+    replace: "{{ greenbone_https_port }}:443"
+
+- name: Ensure the feed-sync log exists
+  ansible.builtin.file:
+    path: "{{ greenbone_feed_sync_log }}"
+    state: touch
+    owner: root
+    group: root
+    mode: "0644"
+    modification_time: preserve
+    access_time: preserve
+
+- name: Install the feed-sync script
+  ansible.builtin.template:
+    src: greenbone-feed-sync.sh.j2
+    dest: "{{ greenbone_feed_sync_script }}"
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install the feed-sync units
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "/etc/systemd/system/{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - src: greenbone-feed-sync.service.j2
+      dest: "{{ greenbone_feed_sync_service }}"
+    - src: greenbone-feed-sync.timer.j2
+      dest: "{{ greenbone_feed_sync_timer }}"
+
+- name: Enable the daily feed sync
+  ansible.builtin.systemd:
+    name: "{{ greenbone_feed_sync_timer }}"
+    enabled: true
+    state: started
+    daemon_reload: true
+
+- name: Ensure the existing Greenbone project is up
+  ansible.builtin.command:
+    cmd: >-
+      docker compose
+      -p {{ greenbone_compose_project }}
+      -f compose.yaml
+      up -d
+    chdir: "{{ greenbone_base_path }}"
+  register: gb_up
+  changed_when: >-
+    'Started' in gb_up.stdout
+    or 'Creating' in gb_up.stdout
+    or 'Recreate' in gb_up.stdout

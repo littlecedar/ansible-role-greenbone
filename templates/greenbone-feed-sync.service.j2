@@ -1,0 +1,10 @@
+[Unit]
+Description=Greenbone Community feed sync
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart={{ greenbone_feed_sync_script }}
+StandardOutput=append:{{ greenbone_feed_sync_log }}
+StandardError=append:{{ greenbone_feed_sync_log }}

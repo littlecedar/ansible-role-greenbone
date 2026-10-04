@@ -9,4 +9,4 @@ Adopts an existing Greenbone Community Edition Compose stack.
 - Copies `compose.yaml` only when the host does not already have one
 - Does not delete volumes
 
-`greenbone_enabled` defaults to false. The MASH playbook does not call this role yet.
+`greenbone_enabled` defaults to false.

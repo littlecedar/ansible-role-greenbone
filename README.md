@@ -1,3 +1,7 @@
+<p align="center">
+<img src="assets/little-cedar-group.png" alt="Little Cedar Group" width="220" />
+</p>
+
 # ansible-role-greenbone
 
 Adopts an existing Greenbone Community Edition Compose stack.

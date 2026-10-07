@@ -1,5 +1,5 @@
 ---
-- name: Require the live Centurion settings when Greenbone is enabled
+- name: Require the published port and compose project when Greenbone is enabled
   ansible.builtin.assert:
     that:
       - greenbone_base_path | length > 0

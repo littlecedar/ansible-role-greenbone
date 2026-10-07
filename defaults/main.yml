@@ -1,6 +1,6 @@
 ---
 # Standalone defaults. The MASH playbook overrides identifier and base path.
-# Centurion must keep greenbone_base_path at /opt/siem/greenbone before this is enabled.
+# Point greenbone_base_path at the existing install before this is enabled.
 
 greenbone_enabled: false
 

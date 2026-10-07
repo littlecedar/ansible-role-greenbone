@@ -19,7 +19,7 @@ Adopts an existing Greenbone Community Edition Compose stack for the Little Ceda
 
 Existing scans, reports, and the `pg-gvm` database stay on their current volumes. The role does not delete volumes.
 
-`greenbone_enabled` defaults to false. A host has to set it to true before the role runs. On Centurion that pair is:
+`greenbone_enabled` defaults to false. A host has to set it to true before the role runs. For an existing install, that pair is:
 
 ```yaml
 greenbone_enabled: true

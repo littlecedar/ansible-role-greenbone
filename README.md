@@ -2,7 +2,7 @@
 <img src="assets/little-cedar-group.png" alt="Little Cedar Group" width="220" />
 </p>
 
-# ansible-role-greenbone by zachary8138
+# ansible-role-greenbone 
 
 Adopts an existing Greenbone Community Edition Compose stack for the Little Cedar MASH playbook.
 
